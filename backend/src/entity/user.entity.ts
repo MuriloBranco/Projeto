@@ -7,21 +7,11 @@ import { Entity,
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
   firstName: string;
 
-  @Column()
-  lastName: string;
 
-  @Column()
-  age: number;
-
-  @CreateDateColumn()
-  created_at: Timestamp;
-
-  @UpdateDateColumn()
-  updated_at: Timestamp;
 }
