@@ -1,4 +1,3 @@
-import { FindOneOptions } from 'typeorm';
 import { Developers } from '../models/developers';
 
 interface IDeveloperDTO {

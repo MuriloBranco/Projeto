@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import routes from './routes';
 import express from 'express';
 import developerRoutes from "./routes/developer.routes";
+import levelRouter from "./routes/level.routes"
 import { AppDataSource } from "./data-source";
 
 dotenv.config({
@@ -20,6 +21,8 @@ const startServer = async () => {
       const port = process.env.API_PORT;
       app.use(express.json());
       app.use("/api", developerRoutes);
+      app.use("/api", levelRouter);
+
 
 
       app.listen(port, () => {

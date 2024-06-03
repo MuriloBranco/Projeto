@@ -1,24 +1,21 @@
 import { ILevelRepository } from "../../repositories/ILevelRepository";
-import { Levels } from "../../models/levels";
 
 interface IRequest {
     id: number;
 }
 
-
-
-class FindLevelById {
+class DeleteLevel {
   constructor(private levelRepository: ILevelRepository) {}
 
-  async execute({id}: IRequest): Promise<Levels> {
+  async execute({ id }: IRequest): Promise<void> {
     const level = await this.levelRepository.findById(id);
 
     if (!level) {
       throw new Error('Developer not found');
     }
 
-    return level;
+    await this.levelRepository.delete(id);
   }
 }
 
-export { FindLevelById };
+export { DeleteLevel };
