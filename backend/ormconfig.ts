@@ -9,7 +9,7 @@ const config: DataSourceOptions = {
   database: 'projeto',
   synchronize: true,
   logging: false,
-  entities: ['./src/entity/**/*.ts'],
+  entities: ['./src/models/*.ts'],
   migrations: ['./src/database/migrations/*.ts'],
   subscribers: ['./src/subscriber/**/*.ts'],
 };

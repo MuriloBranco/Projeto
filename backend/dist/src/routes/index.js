@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const testeRoute_routes_1 = __importDefault(require("./testeRoute.routes"));
+const developer_routes_1 = __importDefault(require("./developer.routes"));
 const routes = (0, express_1.Router)();
-routes.use('/teste', testeRoute_routes_1.default);
+routes.use('/teste', developer_routes_1.default);
 exports.default = routes;
 //# sourceMappingURL=index.js.map

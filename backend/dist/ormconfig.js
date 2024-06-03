@@ -1,21 +1,17 @@
 "use strict";
-const configTypeORM = {
-    type: "postgres",
-    host: "localhost",
+Object.defineProperty(exports, "__esModule", { value: true });
+const config = {
+    type: 'postgres',
+    host: 'localhost',
     port: 5432,
-    username: "postgres",
-    password: "admin",
-    database: "projeto",
+    username: 'postgres',
+    password: 'admin',
+    database: 'projeto',
     synchronize: true,
     logging: false,
     entities: ['./src/entity/**/*.ts'],
-    migrations: ['./src/migrations/*.ts'],
+    migrations: ['./src/database/migrations/*.ts'],
     subscribers: ['./src/subscriber/**/*.ts'],
-    cli: {
-        entitiesDir: './src/entity',
-        migrationsDir: './src/migrations',
-        subscribersDir: './src/subscriber',
-    },
 };
-module.exports = configTypeORM;
+exports.default = config;
 //# sourceMappingURL=ormconfig.js.map
