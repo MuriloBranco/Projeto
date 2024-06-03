@@ -3,22 +3,24 @@ import { Levels } from "../../models/levels";
 
 interface IRequest {
     id: number;
+    nivel: string;
+
 }
 
-
-
-class FindLevelById {
+class UpdateLevel {
   constructor(private levelRepository: ILevelRepository) {}
 
-  async execute({id}: IRequest): Promise<Levels> {
+  async execute({ id, nivel }: IRequest): Promise<Levels> {
     const level = await this.levelRepository.findById(id);
 
-    if (!level) {
-      throw new Error('Developer not found');
-    }
 
-    return level;
+    const updatedLevel = await this.levelRepository.update(id, {
+      nivel: nivel ?? level.nivel,
+
+    });
+
+    return updatedLevel;
   }
 }
 
-export { FindLevelById };
+export { UpdateLevel };

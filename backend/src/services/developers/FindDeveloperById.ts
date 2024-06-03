@@ -1,5 +1,5 @@
-import { IDeveloperRepository } from "src/repositories/IDeveloperRepository";
-import { Developers } from "src/models/developers";
+import { IDeveloperRepository } from "../../repositories/IDeveloperRepository";
+import { Developers } from "../../models/developers";
 
 interface IRequest {
     id: number;
