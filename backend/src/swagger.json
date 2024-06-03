@@ -1,0 +1,316 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "API Documentation",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Murilo Branco",
+            "url": "www.linkedin.com/in/murilobranco",
+            "email": "murilohkbranco@gmail.com"
+        }
+    },
+    "paths": {
+        "/api/desenvolvedores": {
+            "post": {
+                "tags": ["Developers"],
+                "summary": "Create Developers",
+                "description": "Create a new Developer",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string"
+                                    },
+                                    "nivel_id": {
+                                        "type": "string"
+                                    },
+                                    "sexo": {
+                                        "type": "string"
+                                    },
+                                    "hobby": {
+                                        "type": "string"
+                                    },
+                                    "data_nascimento": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "example": {
+                                    "nome": "Murilo Branco",
+                                    "nivel_id": "Pleno",
+                                    "sexo": "M",
+                                    "hobby": "Programar",
+                                    "data_nascimento": "1999-01-20"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Developers"],
+                "summary": "List Developers",
+                "description": "List all Developers",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "nome": {
+                                                "type": "string"
+                                            },
+                                            "nivel_id": {
+                                                "type": "string"
+                                            },
+                                            "sexo": {
+                                                "type": "string"
+                                            },
+                                            "hobby": {
+                                                "type": "string"
+                                            },
+                                            "data_nascimento": {
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/desenvolvedores/{id}": {
+            "put": {
+                "tags": ["Developers"],
+                "summary": "Update Developers",
+                "description": "Update a Developer by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the Developer to update"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string"
+                                    },
+                                    "nivel_id": {
+                                        "type": "string"
+                                    },
+                                    "sexo": {
+                                        "type": "string"
+                                    },
+                                    "hobby": {
+                                        "type": "string"
+                                    },
+                                    "data_nascimento": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "example": {
+                                    "nome": "Murilo Branco",
+                                    "nivel_id": "Pleno",
+                                    "sexo": "M",
+                                    "hobby": "Programar",
+                                    "data_nascimento": "1999-01-20"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Developers"],
+                "summary": "Delete Developers",
+                "description": "Delete a Developer by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the Developer to delete"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/niveis": {
+            "post": {
+                "tags": ["Levels"],
+                "summary": "Create Levels",
+                "description": "Create a new Level",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nivel": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "nivel": "Pleno"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Levels"],
+                "summary": "List Levels",
+                "description": "List all Levels",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "nivel": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/niveis/{id}": {
+            "put": {
+                "tags": ["Levels"],
+                "summary": "Update Levels",
+                "description": "Update a Level by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the Level to update"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nivel": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "nivel": "Pleno"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Levels"],
+                "summary": "Delete Levels",
+                "description": "Delete a Level by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the Level to delete"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    }
+}
