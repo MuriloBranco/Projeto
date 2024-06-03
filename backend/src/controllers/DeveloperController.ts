@@ -26,6 +26,7 @@ class DeveloperController {
     try {
       const developer = await developerRepository.findAll();
       return response.json(developer);
+
     } catch (error) {
         return response.status(400).json({ error: (error as Error).message });
     }
