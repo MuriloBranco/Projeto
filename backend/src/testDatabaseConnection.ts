@@ -1,5 +1,5 @@
 import { AppDataSource } from './server';
-import { User } from './entity/user.entity';
+import { User } from './models/user.entity';
 
 async function testDatabaseConnection() {
     try {
