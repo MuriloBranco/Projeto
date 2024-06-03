@@ -24,6 +24,7 @@ const startServer = async () => {
       app.use("/api", levelRouter);
 
 
+
       app.listen(port, () => {
           console.log(`Servidor está rodando na porta ${port}`);
       });
