@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getDevelopers, deleteDeveloper } from "../services/api";
 import { Developer } from "../types/types";
 import Modal from "./Modal";
-import DeveloperForm from "./developerForm";
+import DeveloperForm from "./DeveloperForm";
 import swal from 'sweetalert';
 
 const DeveloperList: React.FC = () => {

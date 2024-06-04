@@ -1,6 +1,6 @@
 
 import React from 'react';
-import DeveloperList from '../components/developerList';
+import DeveloperList from '../components/DeveloperList';
 
 const Developers: React.FC = () => {
     
