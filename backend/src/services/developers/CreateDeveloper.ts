@@ -13,28 +13,32 @@ class CreateDeveloper {
   constructor(private developerRepository: IDeveloperRepository) {}
 
   async execute({ nivel_id, nome, sexo, data_nascimento, hobby }: IRequest): Promise<Developers> {
-    const nascimentoDate = new Date(data_nascimento);
+    try {
+      const nascimentoDate = new Date(data_nascimento);
 
-    const today = new Date();
-    let idade = today.getFullYear() - nascimentoDate.getFullYear();
-    const birthMonth = nascimentoDate.getMonth();
-    const birthDay = nascimentoDate.getDate();
+      const today = new Date();
+      let idade = today.getFullYear() - nascimentoDate.getFullYear();
+      const birthMonth = nascimentoDate.getMonth();
+      const birthDay = nascimentoDate.getDate();
 
-    if (today.getMonth() < birthMonth || (today.getMonth() === birthMonth && today.getDate() < birthDay)) {
-        idade--;
+      if (today.getMonth() < birthMonth || (today.getMonth() === birthMonth && today.getDate() < birthDay)) {
+          idade--;
       }
 
+      const developer = await this.developerRepository.create({
+        nivel_id,
+        nome,
+        sexo,
+        data_nascimento: nascimentoDate, 
+        idade,
+        hobby
+      });
 
-    const developer = await this.developerRepository.create({
-      nivel_id,
-      nome,
-      sexo,
-      data_nascimento: nascimentoDate, 
-      idade,
-      hobby
-    });
-
-    return developer;
+      return developer;
+    } catch (error) {
+      console.error("Erro ao criar desenvolvedor:", error);
+      throw new Error("Não foi possível criar o desenvolvedor. Por favor, tente novamente.");
+    }
   }
 }
 

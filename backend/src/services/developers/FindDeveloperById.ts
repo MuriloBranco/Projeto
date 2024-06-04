@@ -12,13 +12,18 @@ class FindDeveloperById {
   constructor(private developerRepository: IDeveloperRepository) {}
 
   async execute({id}: IRequest): Promise<Developers> {
-    const developer = await this.developerRepository.findById(id);
+    try {
+      const developer = await this.developerRepository.findById(id);
 
-    if (!developer) {
-      throw new Error('Developer not found');
+      if (!developer) {
+        throw new Error('Developer not found');
+      }
+
+      return developer;
+    } catch (error) {
+      console.error("Erro ao encontrar desenvolvedor:", error);
+      throw new Error("Não foi possível encontrar o desenvolvedor. Por favor, tente novamente.");
     }
-
-    return developer;
   }
 }
 
