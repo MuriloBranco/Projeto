@@ -11,7 +11,7 @@ const NotFound = () => (
   </div>
 );
 
-
+console.log('App Component Rendered');
 function App() {
   return (
     <Router>
