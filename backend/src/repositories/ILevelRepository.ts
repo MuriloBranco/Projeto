@@ -13,6 +13,7 @@ interface ILevelRepository {
     findById(id: number): Promise<Levels | undefined>;
     update(id: number, developer: Partial<Levels>): Promise<Levels>;
     delete(id: number): Promise<void>;
+    findAndCountLevels(query: string, page: number, pageSize: number): Promise<[Levels[], number]>;
 }
 
 export { ILevelRepository, ILevelsDTO };

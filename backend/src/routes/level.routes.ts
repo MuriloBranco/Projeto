@@ -5,7 +5,7 @@ const levelRouter = Router();
 const developerController  = new LevelController();
 
 levelRouter.post("/niveis", developerController.create);
-levelRouter.get("/niveis", developerController.getAll);
+levelRouter.get("/niveis", developerController.index);
 levelRouter.get("/niveis/:id", developerController.getById);
 levelRouter.put("/niveis/:id", developerController.update);
 levelRouter.delete("/niveis/:id", developerController.delete);

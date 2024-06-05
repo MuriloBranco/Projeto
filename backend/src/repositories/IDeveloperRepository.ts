@@ -17,6 +17,7 @@ interface IDeveloperRepository {
     findById(id: number): Promise<Developers | undefined>;
     update(id: number, developer: Partial<Developers>): Promise<Developers>;
     delete(id: number): Promise<void>;
+    findAndCountDevelopers(query: string, page: number, pageSize: number): Promise<[Developers[], number]>;
 };
 
 export { IDeveloperRepository, IDeveloperDTO };
