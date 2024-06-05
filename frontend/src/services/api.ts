@@ -6,8 +6,15 @@ const api = axios.create({
 });
 
 
-export const getDevelopers = () => {
-    return api.get("/desenvolvedores");
+export const getDevelopers = (page: number, pageSize: number, query: string) => {
+    return api.get("/desenvolvedores", {
+        params: {
+            page,
+            pageSize,
+            query,
+        },
+    
+    });
 }
 
 export const getDeveloperById = (id: number) => {
@@ -27,8 +34,14 @@ export const deleteDeveloper = (id: number) => {
 }
 
 
-export const getLevels = () => {
-    return api.get("/niveis");
+export const getLevels = (page: number, pageSize: number, query: string) => {
+    return api.get("/niveis", {
+        params: {
+            page,
+            pageSize,
+            query,
+        },
+    });
 }
 
 export const getLevelById = (id: number) => {

@@ -1,31 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import swal from 'sweetalert';
-import { createLevel } from '../services/api';
+import { createLevel, updateLevel } from '../services/api';
 import FormInput from './Form';
+import { Level } from '../types/types';
 
 type LevelFormData = {
   nivel: string;
 };
 
 interface LevelFormProps {
+  level?: Level | null;
   onClose: () => void;
+  onSave: () => void;
 }
 
-const LevelForm: React.FC<LevelFormProps> = ({ onClose }) => {
-  const { register, handleSubmit, reset } = useForm<LevelFormData>();
+const LevelForm: React.FC<LevelFormProps> = ({ level, onClose, onSave }) => {
+  const { register, handleSubmit, reset, setValue } = useForm<LevelFormData>();
+
+  useEffect(() => {
+    if (level) {
+      setValue('nivel', level.nivel);
+    }
+  }, [level, setValue]);
 
   const submitHandler = async (data: LevelFormData) => {
     try {
-      await createLevel(data);
+      if (level) {
+        await updateLevel(level.id, data);
+        swal("Sucesso", "Nível atualizado com sucesso!", "success");
+      } else {
+        await createLevel(data);
+        swal("Sucesso", "Nível adicionado com sucesso!", "success");
+      }
       reset();
-      swal("Sucesso", "Nível adicionado com sucesso!", "success");
-      setTimeout(() => {
-        onClose();
-      }, 3000);
+      onSave();
+      onClose();
     } catch (error) {
-      console.error("Erro ao adicionar nível", error);
-      swal("Erro", "Ocorreu um erro ao adicionar o nível.", "error");
+      console.error('Erro ao salvar nível', error);
+      swal("Erro", "Ocorreu um erro ao salvar o nível.", "error");
     }
   };
 
