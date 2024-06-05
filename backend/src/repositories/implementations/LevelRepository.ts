@@ -37,6 +37,14 @@ class LevelsRepository implements ILevelRepository {
     async delete(id: number): Promise<void> {
         await this.ormRepository.delete(id);
     }
+
+    async findAndCountLevels(query: string, page: number, pageSize: number): Promise<[Levels[], number]> {
+        return this.ormRepository.createQueryBuilder("level")
+        .where("LOWER(level.nivel) LIKE :query", { query: `%${query.toLowerCase()}%` })
+        .skip((page - 1) * pageSize)
+        .take(pageSize)
+        .getManyAndCount();
+    }
 }
 
 export { LevelsRepository };

@@ -4,12 +4,27 @@ import { LevelsRepository } from '../repositories/implementations/LevelRepositor
 import { FindLevelById } from '../services/levels/FindLevelsById';
 import { UpdateLevel } from '../services/levels/UpdateLevel';
 import { DeleteLevel } from '../services/levels/DeleteLevel';
-
+import { FindAllLevels } from '../services/levels/FindAllLevels';
 
 
 
 
 class LevelController {
+   async index(request: Request, response: Response): Promise<Response> {
+     const levelRepository = new LevelsRepository();
+     const findAllLevels = new FindAllLevels(levelRepository);
+     const { query, page = 1, pageSize = 10 } = request.query;
+
+    try {
+      const { levels, totalPages } = await findAllLevels.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
+      return response.json({ items: levels, totalPages });
+    } catch (error) {
+      console.error('Erro ao carregar níveis', error);
+      return response.status(500).json({ message: 'Erro ao carregar níveis' });
+    }
+  }
+
+  
   async create(request: Request, response: Response) {
     const { nivel } = request.body;
 

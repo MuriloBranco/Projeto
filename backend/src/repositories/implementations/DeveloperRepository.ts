@@ -37,6 +37,14 @@ class DevelopersRepository implements IDeveloperRepository {
     async delete(id: number): Promise<void> {
         await this.ormRepository.delete(id);
     }
+
+    async findAndCountDevelopers(query: string, page: number, pageSize: number): Promise<[Developers[], number]> {
+        return this.ormRepository.createQueryBuilder("developer")
+        .where("LOWER(developer.nome) LIKE :query", { query: `%${query.toLowerCase()}%` })
+        .skip((page - 1) * pageSize)
+        .take(pageSize)
+        .getManyAndCount();
+    }
 }
 
 export { DevelopersRepository };

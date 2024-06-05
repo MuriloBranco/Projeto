@@ -4,8 +4,25 @@ import { DevelopersRepository } from '../repositories/implementations/DeveloperR
 import { FindDeveloperById } from '../services/developers/FindDeveloperById';
 import { UpdateDeveloper } from '../services/developers/UpdateDeveloper';
 import { DeleteDeveloper } from '../services/developers/DeleteDeveloper';
+import { FindAllDevelopers } from '../services/developers/FindAllDevelopers';
+
+
 
 class DeveloperController {
+  async index(request: Request, response: Response): Promise<Response> {
+    const developersRepository = new DevelopersRepository();
+    const findAllDevelopers = new FindAllDevelopers(developersRepository);
+    const { query, page = 1, pageSize = 10 } = request.query;
+
+    try {
+      const { developers, totalPages } = await findAllDevelopers.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
+      return response.json({ items: developers, totalPages });
+    } catch (error) {
+      console.error('Erro ao carregar desenvolvedor', error);
+      return response.status(500).json({ message: 'Erro ao carregar desenvolvedor' });
+    }
+  }
+
   async create(request: Request, response: Response) {
     const { nivel_id, nome, sexo, data_nascimento, hobby } = request.body;
 
