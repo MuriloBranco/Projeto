@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import swal from 'sweetalert';
 import { Pagination } from '@mui/material';
+import Button from './Button';
 
 type Level = {
   id: number;
@@ -25,16 +26,14 @@ const LevelList: React.FC = () => {
     setSelectedLevel(null);
   };
 
-  useEffect(() => {
-    loadLevels(currentPage, searchQuery);
-  }, [currentPage, searchQuery]);
+ 
 
   const loadLevels = async (page: number, query: string) => {
     try {
       const response = await getLevels(page, 10, query);
-      setLevels(response.data.items);
-      setTotalPages(response.data.totalPages);
-      if (response.data.items.length === 0) {
+      setLevels(response.data.data);
+      setTotalPages(response.data.meta.last_page);
+      if (response.data.length === 0) {
         swal("Nenhum nível encontrado", {
           icon: "info",
         });
@@ -43,6 +42,10 @@ const LevelList: React.FC = () => {
       console.error('Erro ao carregar níveis', error);
     }
   };
+
+  useEffect(() => {
+    loadLevels(currentPage, searchQuery);
+  }, [currentPage, searchQuery]);
 
   const handleSaveLevel = () => {
     loadLevels(currentPage, searchQuery);
@@ -80,78 +83,81 @@ const LevelList: React.FC = () => {
     setCurrentPage(page);
 };
 
-  return (
-    <div className="container mx-auto p-4">
-      <Link to="/developers" className="text-blue-500">Voltar</Link>
-      <h1 className="text-2xl font-bold mb-4">Lista de Níveis</h1>
-      <div className="flex justify-between p-4">
-      <button 
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-4" 
+return (
+  <div className="container mx-auto p-12 min-w-[800px]">
+    <div className='flex justify-between'>
+      <h1 className="text-4xl font-bold mb-4 p-1">Lista de Níveis</h1>
+      <Link to="/developers">
+        <Button color='danger'>
+          Gerenciar Desenvolvedores
+        </Button>
+      </Link>
+    </div>
+    <div className="flex justify-between p-4">
+      <Button 
+        color='primary' 
         onClick={handleOpenModal}
       >
         Adicionar Nível
-      </button>
+      </Button>
       <input
-          className="rounded-2xl bg-gray-100 p-2"
-          type="text"
-          placeholder="Buscar níveis"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-      <Modal show={showModal} onClose={handleCloseModal}>
-      <LevelForm 
-          level={selectedLevel}
-          onClose={handleCloseModal}
-          onSave={handleSaveLevel} 
-        />
-      </Modal>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border">
-          <thead>
-                  <tr>
-                      <th className="py-2 px-4 text-left">Nome</th>
-                      <th className="py-2 px-4 text-left">Quantidade vinculado</th>
-                      <th className="py-2 px-4 text-left">Ações</th>
-                    </tr>
-          </thead>
-          <tbody>
-            {levels.map((level) => (
-              <tr key={level.id} className="border-t">
-                <td className="py-2 px-4">{level.nivel}</td>
-                <td className="py-2 px-4">{level.nivel}</td>
-                <td className="py-2 px-4 space-x-2">
-                  <button 
-                    className="bg-yellow-500 text-white px-2 py-1 rounded" 
-                    onClick={() => handleEditLevel(level)}
-                  >
-                    Editar
-                  </button>
-                  <button 
-                    className="bg-red-500 text-white px-2 py-1 rounded" 
-                    onClick={() => handleDeleteLevel(level.id)}
-                  >
-                    Deletar
-                  </button>
-                </td>
-              </tr>
-
-                
-
-          ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center mt-4">
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </div>
+        className="rounded-2xl bg-gray-100 p-2"
+        type="text"
+        placeholder="Buscar níveis"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
     </div>
-  );
+    <Modal show={showModal} onClose={handleCloseModal}>
+      <LevelForm 
+        level={selectedLevel}
+        onClose={handleCloseModal}
+        onSave={handleSaveLevel} 
+      />
+    </Modal>
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white border table-fixed">
+        <thead>
+          <tr>
+            <th className="py-2 px-4 text-left w-1/2">Nome</th>
+            <th className="py-2 px-4 text-left w-1/3">Quantidade vinculado</th>
+            <th className="py-2 px-4 text-left w-1/3">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {levels.map((level) => (
+            <tr key={level.id} className="border-t">
+              <td className="py-2 px-4">{level.nivel}</td>
+              <td className="py-2 px-4">{level.nivel}</td>
+              <td className="py-2 px-4 space-x-2">
+                <button 
+                  className="bg-yellow-500 text-white px-2 py-1 rounded" 
+                  onClick={() => handleEditLevel(level)}
+                >
+                  Editar
+                </button>
+                <button 
+                  className="bg-red-500 text-white px-2 py-1 rounded" 
+                  onClick={() => handleDeleteLevel(level.id)}
+                >
+                  Deletar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div className="flex justify-center mt-4">
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="primary"
+      />
+    </div>
+  </div>
+);
 };
 
 export default LevelList;

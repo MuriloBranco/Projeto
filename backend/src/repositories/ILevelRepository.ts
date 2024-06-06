@@ -14,7 +14,7 @@ interface ILevelRepository {
     update(id: number, developer: Partial<Levels>): Promise<Levels>;
     delete(id: number): Promise<void>;
     hasAssociatedDevelopers(levelId: number): Promise<boolean>;
-    findAndCountLevels(query: string, page: number, pageSize: number): Promise<[Levels[], number]>;
+    findAndCountLevels(query: string, page: number, pageSize: number): Promise<{ levels: Levels[], total: number, currentPage: number, lastPage: number }>;
     // findLevelsWithDeveloperCount(page: number, limit: number, query: string): Promise<{ items: Levels[], totalPages: number }>;
 }
 

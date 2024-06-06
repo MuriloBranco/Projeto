@@ -17,11 +17,19 @@ class LevelController {
      const { query, page = 1, pageSize = 10 } = request.query;
 
     try {
-      const { levels, totalPages } = await findAllLevels.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
+      const { levels, total, perPage, currentPage, lastPage } = await findAllLevels.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
       if (levels.length === 0) {
         return response.status(404).json({ message: 'Nenhum nível encontrado' });
       }
-      return response.json({ items: levels, totalPages });
+      return response.status(200).json({
+        data: levels,
+        meta: {
+          total,
+          per_page: perPage,
+          current_page: currentPage,
+          last_page: lastPage
+        }
+      });
     } catch (error) {
       console.error('Erro ao carregar níveis', error);
       return response.status(500).json({ message: 'Erro ao carregar níveis' });
@@ -43,17 +51,6 @@ class LevelController {
     }
   }
 
-  async getAll(request: Request, response: Response) {
-    const levelRepository = new LevelsRepository();
-
-    try {
-      const level = await levelRepository.findAll();
-      return response.json(level);
-    } catch (error) {
-        return response.status(400).json({ error: (error as Error).message });
-    }
-  }
-
   async getById(request: Request, response: Response) {
     const { id } = request.params;
 
@@ -65,7 +62,7 @@ class LevelController {
       if (!level) {
         return response.status(404).json({ error: 'Level not found' });
       }
-      return response.json(level);
+      return response.status(200).json(level);
     } catch (error) {
         return response.status(400).json({ error: (error as Error).message });
     }
@@ -83,7 +80,7 @@ class LevelController {
       if (!level) {
         return response.status(404).json({ error: 'Level not found' });
       }
-      return response.json(level);
+      return response.status(200).json(level);
     } catch (error) {
         return response.status(400).json({ error: (error as Error).message });
     }

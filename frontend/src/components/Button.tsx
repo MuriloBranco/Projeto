@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ButtonProps {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
   color?: 'primary' | 'secondary' | 'danger';
 }
@@ -10,9 +10,9 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ children, onClick, className = '', color = 'primary' }) => {
   const baseStyle = 'px-4 py-2 rounded font-medium text-white focus:outline-none focus:ring';
   const colorStyles = {
-    primary: 'bg-blue-500 hover:bg-blue-600',
-    secondary: 'bg-yellow-500 hover:bg-yellow-600',
-    danger: 'bg-red-500 hover:bg-red-600',
+    primary: 'bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded mb-4',
+    secondary: 'bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded mb-4',
+    danger: 'bg-red-500 hover:bg-red-600 px-4 py-2 rounded mb-4',
   };
 
   return (

@@ -2,21 +2,33 @@ import { Developers } from '../../models/developers';
 import { IDeveloperRepository } from '../../repositories/IDeveloperRepository';
 
 interface IRequest {
-    query?: string;
-    page: number;
-    pageSize: number;
-  }
+  query?: string;
+  page: number;
+  pageSize: number;
+}
+
+interface IResponse {
+  developers: Developers[];
+  total: number;
+  perPage: number;
+  currentPage: number;
+  lastPage: number;
+}
 
 class FindAllDevelopers {
-    constructor(private DeveloperRepository: IDeveloperRepository) {}
-    
-    async execute({ query, page, pageSize }: IRequest): Promise<{ developers: Developers[], totalPages: number }> {
-        const [developers, totaldevelopers] = await this.DeveloperRepository.findAndCountDevelopers(query || '', page, pageSize);
+  constructor(private developersRepository: IDeveloperRepository) {}
 
-        const totalPages = Math.ceil(totaldevelopers / pageSize);
+  public async execute({ query = '', page, pageSize }: IRequest): Promise<IResponse> {
+    const { developers, total, currentPage, lastPage } = await this.developersRepository.findAndCountDevelopers(query, page, pageSize);
 
-        return { developers, totalPages };
-    }
+    return {
+      developers,
+      total,
+      perPage: pageSize,
+      currentPage,
+      lastPage
+    };
+  }
 }
 
 export { FindAllDevelopers };
