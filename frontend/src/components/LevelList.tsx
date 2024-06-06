@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { getLevels, deleteLevel } from '../services/api';
-import LevelForm from './/LevelForm';
+import LevelForm from './LevelForm';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import swal from 'sweetalert';
 import { Pagination } from '@mui/material';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from './Button';
 
 type Level = {
@@ -19,6 +21,7 @@ const LevelList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => {
@@ -26,14 +29,17 @@ const LevelList: React.FC = () => {
     setSelectedLevel(null);
   };
 
- 
-
-  const loadLevels = async (page: number, query: string) => {
+  const loadLevels = useCallback(async (page: number, query: string) => {
     try {
       const response = await getLevels(page, 10, query);
-      setLevels(response.data.data);
+      let sortedLevels = response.data.data.sort((a: Level, b: Level) => {
+        if (a.nivel < b.nivel) return sortOrder === 'asc' ? -1 : 1;
+        if (a.nivel > b.nivel) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+      setLevels(sortedLevels);
       setTotalPages(response.data.meta.last_page);
-      if (response.data.length === 0) {
+      if (response.data.data.length === 0) {
         swal("Nenhum nível encontrado", {
           icon: "info",
         });
@@ -41,11 +47,11 @@ const LevelList: React.FC = () => {
     } catch (error) {
       console.error('Erro ao carregar níveis', error);
     }
-  };
+  }, [sortOrder]);
 
   useEffect(() => {
     loadLevels(currentPage, searchQuery);
-  }, [currentPage, searchQuery]);
+  }, [currentPage, searchQuery, sortOrder, loadLevels]);
 
   const handleSaveLevel = () => {
     loadLevels(currentPage, searchQuery);
@@ -81,83 +87,88 @@ const LevelList: React.FC = () => {
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
-};
+  };
 
-return (
-  <div className="container mx-auto p-12 min-w-[800px]">
-    <div className='flex justify-between'>
-      <h1 className="text-4xl font-bold mb-4 p-1">Lista de Níveis</h1>
-      <Link to="/developers">
-        <Button color='danger'>
-          Gerenciar Desenvolvedores
+  const handleSortByName = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
+  return (
+    <div className="container max-w-full p-12">
+      <div className="flex justify-between">
+        <h1 className="text-4xl font-bold mb-4 p-1">Lista de Níveis</h1>
+        <Link to="/developers">
+          <Button color='danger'>
+            Gerenciar Desenvolvedores
+          </Button>
+        </Link>
+      </div>
+      <div className="flex justify-between p-4">
+        <Button onClick={handleOpenModal} color="primary">
+          Adicionar Nível
         </Button>
-      </Link>
-    </div>
-    <div className="flex justify-between p-4">
-      <Button 
-        color='primary' 
-        onClick={handleOpenModal}
-      >
-        Adicionar Nível
-      </Button>
-      <input
-        className="rounded-2xl bg-gray-100 p-2"
-        type="text"
-        placeholder="Buscar níveis"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-    </div>
-    <Modal show={showModal} onClose={handleCloseModal}>
-      <LevelForm 
-        level={selectedLevel}
-        onClose={handleCloseModal}
-        onSave={handleSaveLevel} 
-      />
-    </Modal>
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border table-fixed">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 text-left w-2/5">Nome</th>
-            <th className="py-2 px-4 text-left w-1/3">Quantidade vinculado</th>
-            <th className="py-2 px-4 text-left w-1/3">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {levels.map((level) => (
-            <tr key={level.id} className="border-t">
-              <td className="py-2 px-4">{level.nivel}</td>
-              <td className="py-2 px-4">{level.nivel}</td>
-              <td className="py-2 px-4 space-x-2">
-                <button 
-                  className="bg-yellow-500 text-white px-2 py-1 rounded" 
-                  onClick={() => handleEditLevel(level)}
-                >
-                  Editar
-                </button>
-                <button 
-                  className="bg-red-500 text-white px-2 py-1 rounded" 
-                  onClick={() => handleDeleteLevel(level.id)}
-                >
-                  Deletar
-                </button>
-              </td>
+        <input
+          className="rounded-2xl bg-gray-100 p-2"
+          type="text"
+          placeholder="Buscar níveis"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+      <Modal show={showModal} onClose={handleCloseModal}>
+        <LevelForm 
+          level={selectedLevel}
+          onClose={handleCloseModal}
+          onSave={handleSaveLevel} 
+        />
+      </Modal>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border table-fixed">
+          <thead>
+            <tr className="bg-slate-300">
+              <th className="py-2 px-4 text-left cursor-pointer w-2/5" onClick={handleSortByName}>
+                Nome
+                &nbsp;
+                <FontAwesomeIcon icon={faSort} />
+              </th>
+              <th className="py-2 px-4 text-left w-2/5">Quantidade vinculado</th>
+              <th className="py-2 px-4 text-left w-1/3">Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {levels.map((level) => (
+              <tr key={level.id} className="border-t flex flex-wrap md:table-row">
+                <td className="py-2 px-4 w-full md:w-auto">{level.nivel}</td>
+                <td className="py-2 px-4 w-full md:w-auto">{level.nivel}</td>
+                <td className="py-2 px-4 w-full md:w-auto flex space-x-2 justify-center md:justify-start">
+                  <Button 
+                    color="secondary" 
+                    onClick={() => handleEditLevel(level)}
+                  >
+                    Editar
+                  </Button>
+                  <Button 
+                    color="danger" 
+                    onClick={() => handleDeleteLevel(level.id)}
+                  >
+                    Deletar
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-center mt-4">
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </div>
     </div>
-    <div className="flex justify-center mt-4">
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        color="primary"
-      />
-    </div>
-  </div>
-);
+  );
 };
 
 export default LevelList;
