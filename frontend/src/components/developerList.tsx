@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { getDevelopers, deleteDeveloper } from "../services/api";
+import { Link } from 'react-router-dom';
 import { Developer } from "../types/types";
 import { Pagination } from '@mui/material';
 import Modal from "./Modal";
@@ -93,11 +94,15 @@ const DeveloperList: React.FC = () => {
 
     return (
         <div className="container mx-auto p-4">
+            
             <h1 className="text-2xl font-bold mb-4">Lista de Desenvolvedores</h1>
             <div className="flex justify-between p-4">
                 <Button onClick={handleOpenModal} color="primary">
                     Adicionar Desenvolvedor
                 </Button>
+                <button className="bg-slate-600">
+                    <Link to="/levels" className="text-white">Gerenciar Níveis</Link>
+                </button>
                 <input
                     className="rounded-2xl bg-gray-100 p-2"
                     type="text"
@@ -134,7 +139,7 @@ const DeveloperList: React.FC = () => {
                         {developers.map((developer) => (
                             <tr key={developer.id} className="border-t flex flex-wrap md:table-row">
                                 <td className="py-2 px-4 w-full md:w-auto">{developer.nome}</td>
-                                <td className="py-2 px-4 w-full md:w-auto">{developer.nivel_id}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.level.nivel}</td>
                                 <td className="py-2 px-4 w-full md:w-auto">{developer.idade}</td>
                                 <td className="py-2 px-4 w-full md:w-auto">{developer.sexo}</td>
                                 <td className="py-2 px-4 w-full md:w-auto">{developer.hobby}</td>

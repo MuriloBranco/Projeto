@@ -1,9 +1,11 @@
 import { IDeveloperRepository } from "../../repositories/IDeveloperRepository";
 import { Developers } from "../../models/developers";
+import { ILevelRepository } from "../../repositories/ILevelRepository";
+import { Levels } from "../../models/levels";
 
 interface IRequest {
     id: number;
-    nivel_id?: number;
+    level?: number;
     nome?: string;
     sexo?: string;
     data_nascimento?: Date | string;
@@ -11,14 +13,26 @@ interface IRequest {
 }
 
 class UpdateDeveloper {
-  constructor(private developerRepository: IDeveloperRepository) {}
+  constructor(
+    private developerRepository: IDeveloperRepository,
+    private levelRepository: ILevelRepository
+  ) {}
 
-  async execute({ id, nivel_id, nome, sexo, data_nascimento, hobby }: IRequest): Promise<Developers> {
+  async execute({ id, level, nome, sexo, data_nascimento, hobby }: IRequest): Promise<Developers> {
     try {
       const developer = await this.developerRepository.findById(id);
 
       if (!developer) {
         throw new Error('Developer not found');
+      }
+
+      let levelEntity: Levels | undefined = developer.level;
+      if (level !== undefined) {
+        levelEntity = await this.levelRepository.findById(level);
+
+        if (!levelEntity) {
+          throw new Error('Level not found');
+        }
       }
 
       const nascimentoDate = new Date(data_nascimento);
@@ -32,7 +46,7 @@ class UpdateDeveloper {
       }
 
       const updatedDeveloper = await this.developerRepository.update(id, {
-        nivel_id: nivel_id ?? developer.nivel_id,
+        level: levelEntity?.id,
         nome: nome ?? developer.nome,
         sexo: sexo ?? developer.sexo,
         data_nascimento: nascimentoDate ?? developer.data_nascimento,

@@ -2,6 +2,7 @@ import { Entity,
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
+    JoinColumn,
  } from 'typeorm';
 import { Levels } from './levels';
   
@@ -9,9 +10,6 @@ import { Levels } from './levels';
   export class Developers {
     @PrimaryGeneratedColumn()
     id: number;
-  
-    @Column()
-    nivel_id: number;
 
     @Column()
     nome: string;
@@ -29,5 +27,6 @@ import { Levels } from './levels';
     hobby: string;
 
     @ManyToOne(() => Levels, level => level.developers)
-    level: Levels;
+    @JoinColumn({ name: 'level' })
+    level: Levels;   
   }
