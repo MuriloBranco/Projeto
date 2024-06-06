@@ -2,7 +2,7 @@ import { IDeveloperRepository } from "../../repositories/IDeveloperRepository";
 import { Developers } from "../../models/developers";
 
 interface IRequest {
-  nivel_id: string;
+  nivel_id: number;
   nome: string;
   sexo: string;
   data_nascimento: Date | string;

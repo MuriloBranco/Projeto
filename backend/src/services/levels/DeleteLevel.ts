@@ -1,18 +1,23 @@
 import { ILevelRepository } from "../../repositories/ILevelRepository";
 
-interface IRequest {
+interface IDeleteLevelRequest {
     id: number;
 }
 
 class DeleteLevel {
   constructor(private levelRepository: ILevelRepository) {}
 
-  async execute({ id }: IRequest): Promise<void> {
+  async execute({ id }: IDeleteLevelRequest): Promise<void> {
     try {
       const level = await this.levelRepository.findById(id);
 
       if (!level) {
         throw new Error('Level not found');
+      }
+
+      const hasDevelopers = await this.levelRepository.hasAssociatedDevelopers(id);
+      if (hasDevelopers) {
+        throw new Error('Cannot delete level with associated developers');
       }
 
       await this.levelRepository.delete(id);

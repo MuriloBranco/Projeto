@@ -1,7 +1,7 @@
 import { ILevelRepository } from "../../repositories/ILevelRepository";
 import { Levels } from "../../models/levels";
 
-interface IRequest {
+interface IFindLevelByIdRequest  {
     id: number;
 }
 
@@ -10,7 +10,7 @@ interface IRequest {
 class FindLevelById {
   constructor(private levelRepository: ILevelRepository) {}
 
-  async execute({id}: IRequest): Promise<Levels> {
+  async execute({id}: IFindLevelByIdRequest): Promise<Levels> {
     try {
       const level = await this.levelRepository.findById(id);
 

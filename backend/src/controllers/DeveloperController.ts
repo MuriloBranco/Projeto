@@ -16,6 +16,9 @@ class DeveloperController {
 
     try {
       const { developers, totalPages } = await findAllDevelopers.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
+      if (developers.length === 0) {
+        return response.status(404).json({ message: 'Nenhum desenvolvedor encontrado' });
+      }
       return response.json({ items: developers, totalPages });
     } catch (error) {
       console.error('Erro ao carregar desenvolvedor', error);
@@ -41,9 +44,11 @@ class DeveloperController {
     const developerRepository = new DevelopersRepository();
 
     try {
-      const developer = await developerRepository.findAll();
-      return response.json(developer);
-
+      const developers = await developerRepository.findAll();
+      if (developers.length === 0) {
+        return response.status(404).json({ message: 'Nenhum desenvolvedor encontrado' });
+      }
+      return response.json(developers);
     } catch (error) {
         return response.status(400).json({ error: (error as Error).message });
     }

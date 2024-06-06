@@ -1,10 +1,11 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createDeveloper, updateDeveloper } from '../services/api';
+import { createDeveloper, getLevels, updateDeveloper } from '../services/api';
 import FormInput from './Form';
 import swal from 'sweetalert';
 import { Developer } from '../types/types';
+import { Level } from '../types/types';
 
 type DeveloperFormData = {
   nome: string;
@@ -12,7 +13,8 @@ type DeveloperFormData = {
   data_nascimento: string;
   idade: number;
   hobby: string;
-  nivel_id: string;
+  nivel_id: number;
+  level: Level;
 };
 
 interface DeveloperFormProps {
@@ -22,7 +24,20 @@ interface DeveloperFormProps {
 }
 
 const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSave }) => {
-  const { register, handleSubmit, reset, setValue  } = useForm<DeveloperFormData>();
+  const [levels, setLevels] = useState([]);
+  
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<DeveloperFormData>();
+
+  useEffect(() => {
+    const loadLevels = async () => {
+      const levelsData = await getLevels(1, 100, '');
+      setLevels(levelsData.data.items);
+    };
+
+    loadLevels();
+  }
+  , []);
+
 
   useEffect(() => {
     if (developer) {
@@ -31,7 +46,7 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
       setValue('data_nascimento', developer.data_nascimento);
       setValue('idade', developer.idade);
       setValue('hobby', developer.hobby);
-      setValue('nivel_id', developer.nivel_id.toString());
+      setValue('nivel_id', developer.nivel_id);
     }
   }, [developer, setValue]);
 
@@ -55,27 +70,58 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col space-y-4">
-      <FormInput name="nome" placeholder="Nome" register={register} required />
-      <select
-        {...register('sexo', { required: true })}
-        className="px-4 py-2 border border-gray-300 rounded-md"
-      >
-        <option value="">Selecione o sexo</option>
-        <option value="M">Masculino</option>
-        <option value="F">Feminino</option>
-        <option value="O">Outro</option>
-      </select>
-      <select
-        {...register('nivel_id', { required: true })}
-        className="px-4 py-2 border border-gray-300 rounded-md"
-      >
-        <option value="">Selecione o nível</option>
-        <option value="1">Iniciante</option>
-        <option value="2">Intermediário</option>
-        <option value="3">Avançado</option>
-      </select>
-      <FormInput name="data_nascimento" type="date" register={register} required placeholder={''} />
-      <FormInput name="hobby" placeholder="Hobby" register={register} required />
+      <FormInput
+        name="nome"
+        placeholder="Nome"
+        register={register}
+        error={errors.nome}
+        required
+      />
+      
+      <div>
+        <select
+          {...register('sexo', { required: "Sexo é um campo obrigatório" })}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md"
+        >
+          <option value="">Selecione o sexo</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Feminino">Feminino</option>
+          <option value="Outro">Outro</option>
+        </select>
+        {errors.sexo && <p className="text-red-500 text-sm">{errors.sexo.message}</p>}
+      </div>
+
+      <div>
+        <select
+          {...register('nivel_id', { required: "Nível é um campo obrigatório" })}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md"
+        >
+          <option value="">Selecione o nível</option>
+          {levels.map((level: Level) => (
+            <option key={level.id} value={level.id}>
+              {level.nivel}
+            </option>
+          ))}
+        </select>
+        {errors.nivel_id && <p className="text-red-500 text-sm">{errors.nivel_id.message}</p>}
+      </div>
+
+      <FormInput
+        name="data_nascimento"
+        type="date"
+        placeholder="Data de Nascimento"
+        register={register}
+        error={errors.data_nascimento}
+        required
+      />
+
+      <FormInput
+        name="hobby"
+        placeholder="Hobby"
+        register={register}
+        error={errors.hobby}
+        required
+      />
       
       <button
         type="submit"

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getDevelopers, deleteDeveloper } from "../services/api";
 import { Developer } from "../types/types";
 import { Pagination } from '@mui/material';
 import Modal from "./Modal";
 import DeveloperForm from "./DeveloperForm";
 import swal from 'sweetalert';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { format } from 'date-fns';
+import Button from './Button';
 
 const DeveloperList: React.FC = () => {
     const [developers, setDevelopers] = useState<Developer[]>([]);
@@ -13,6 +17,7 @@ const DeveloperList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => {
@@ -20,19 +25,31 @@ const DeveloperList: React.FC = () => {
         setSelectedDeveloper(null);
     };
 
-    useEffect(() => {
-        loadDevelopers(currentPage, searchQuery);
-    }, [currentPage, searchQuery]);
+    const teste = developers.map((developer) => {
+        return developer.level
+    })
+    console.log(teste)
 
-    const loadDevelopers = async (page: number, query: string) => {
+    const loadDevelopers = useCallback(async (page: number, query: string) => {
         try {
             const response = await getDevelopers(page, 10 , query);
-            setDevelopers(response.data.items);
+            let sortedDevelopers = response.data.items.sort((a: Developer, b: Developer) => {
+                if (a.nome < b.nome) return sortOrder === 'asc' ? -1 : 1;
+                if (a.nome > b.nome) return sortOrder === 'asc' ? 1 : -1;
+                return 0;
+            });
+            setDevelopers(sortedDevelopers);
             setTotalPages(response.data.totalPages);
         } catch (error) {
-            console.error("Erro ao carregar desenvolvedores", error);
+            // console.error("Erro ao carregar desenvolvedores", error);
         }
-    };
+    }, [sortOrder]);
+
+    useEffect(() => {
+        loadDevelopers(currentPage, searchQuery);
+    }, [currentPage, searchQuery, sortOrder, loadDevelopers]);
+
+
 
     const handleSaveDeveloper = () => {
         loadDevelopers(currentPage, searchQuery);
@@ -60,7 +77,7 @@ const DeveloperList: React.FC = () => {
                 });
                 loadDevelopers(currentPage, searchQuery);
             } catch (error) {
-                console.error("Erro ao deletar desenvolvedor", error);
+                // console.error("Erro ao deletar desenvolvedor", error);
                 swal("Erro", "Ocorreu um erro ao deletar o desenvolvedor.", "error");
             }
         }
@@ -70,23 +87,24 @@ const DeveloperList: React.FC = () => {
         setCurrentPage(page);
     };
 
+    const handleSortByName = () => {
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    };
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Lista de Desenvolvedores</h1>
             <div className="flex justify-between p-4">
-            <button 
-                className="bg-blue-500 text-white px-4 py-2 rounded mb-4" 
-                onClick={handleOpenModal}
-            >
-                Adicionar Desenvolvedor
-            </button>
-            <input
-                className="rounded-2xl bg-gray-100 p-2"
-                type="text"
-                placeholder="Buscar níveis"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            />
+                <Button onClick={handleOpenModal} color="primary">
+                    Adicionar Desenvolvedor
+                </Button>
+                <input
+                    className="rounded-2xl bg-gray-100 p-2"
+                    type="text"
+                    placeholder="Buscar desenvolvedor"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
             </div>
             <Modal show={showModal} onClose={handleCloseModal}>
                 <DeveloperForm 
@@ -95,36 +113,57 @@ const DeveloperList: React.FC = () => {
                     onSave={handleSaveDeveloper} 
                 />
             </Modal>
-            <ul className="space-y-2">
-                {developers.map((developer) => (
-                    <li 
-                        key={developer.id} 
-                        className="flex justify-between items-center p-4 border border-gray-200 rounded"
-                    >
-                        <span>{developer.nome}</span>
-                        <div className="space-x-2">
-                            <button 
-                                className="bg-yellow-500 text-white px-2 py-1 rounded" 
-                                onClick={() => handleEditDeveloper(developer)}
-                            >
-                                Editar
-                            </button>
-                            <button 
-                                className="bg-red-500 text-white px-2 py-1 rounded" 
-                                onClick={() => handleDeleteDeveloper(developer.id)}
-                            >
-                                Deletar
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border">
+                    <thead>
+                        <tr className="bg-slate-300">
+                            <th className="py-2 px-4 text-left cursor-pointer" onClick={handleSortByName}
+                            >Nome
+                            &nbsp;
+                            <FontAwesomeIcon icon={faSort} />
+                            </th>
+                            <th className="py-2 px-4 text-left">Nível</th>
+                            <th className="py-2 px-4 text-left">Idade</th>
+                            <th className="py-2 px-4 text-left">Sexo</th>
+                            <th className="py-2 px-4 text-left">Hobby</th>
+                            <th className="py-2 px-4 text-left">Aniversário</th>
+                            <th className="py-2 px-4 text-left">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {developers.map((developer) => (
+                            <tr key={developer.id} className="border-t flex flex-wrap md:table-row">
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.nome}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.nivel_id}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.idade}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.sexo}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.hobby}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{format(new Date(developer.data_nascimento), 'dd/MM/yyyy')}</td>
+                                <td className="py-2 px-4 w-full md:w-auto flex space-x-2 justify-center md:justify-start">
+                                    <Button 
+                                        color="secondary" 
+                                        onClick={() => handleEditDeveloper(developer)}
+                                    >
+                                        Editar
+                                    </Button>
+                                    <Button 
+                                        color="danger" 
+                                        onClick={() => handleDeleteDeveloper(developer.id)}
+                                    >
+                                        Deletar
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             <div className="flex justify-center mt-4">
                 <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    color="primary"
                 />
             </div>
         </div>
