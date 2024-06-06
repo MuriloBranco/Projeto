@@ -5,18 +5,30 @@ interface IFindAllLevelsRequest {
     query?: string;
     page: number;
     pageSize: number;
-}
+  }
+  
+  interface IFindAllLevelsResponse {
+    levels: Levels[];
+    total: number;
+    perPage: number;
+    currentPage: number;
+    lastPage: number;
+  }
 
-class FindAllLevels {
+  class FindAllLevels {
     constructor(private levelRepository: ILevelRepository) {}
-    
-    async execute({ query, page, pageSize }: IFindAllLevelsRequest): Promise<{ levels: Levels[], totalPages: number }> {
-        const [levels, totalLevels] = await this.levelRepository.findAndCountLevels(query || '', page, pageSize);
-
-        const totalPages = Math.ceil(totalLevels / pageSize);
-
-        return { levels, totalPages };
+  
+    async execute({ query, page, pageSize }: IFindAllLevelsRequest): Promise<IFindAllLevelsResponse> {
+      const { levels, total, currentPage, lastPage } = await this.levelRepository.findAndCountLevels(query || '', page, pageSize);
+  
+      return {
+        levels,
+        total,
+        perPage: pageSize,
+        currentPage,
+        lastPage
+      };
     }
-}
-
-export { FindAllLevels };
+  }
+  
+  export { FindAllLevels };

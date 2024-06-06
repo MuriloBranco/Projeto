@@ -16,11 +16,19 @@ class DeveloperController {
     const { query, page = 1, pageSize = 10 } = request.query;
 
     try {
-      const { developers, totalPages } = await findAllDevelopers.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
+      const { developers, total, perPage, currentPage, lastPage } = await findAllDevelopers.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
       if (developers.length === 0) {
         return response.status(404).json({ message: 'Nenhum desenvolvedor encontrado' });
       }
-      return response.json({ items: developers, totalPages });
+      return response.status(200).json({
+        data: developers,
+        meta: {
+          total,
+          per_page: perPage,
+          current_page: currentPage,
+          last_page: lastPage
+        }
+      });
     } catch (error) {
       console.error('Erro ao carregar desenvolvedor', error);
       return response.status(500).json({ message: 'Erro ao carregar desenvolvedor' });
@@ -41,20 +49,6 @@ class DeveloperController {
     }
   }
 
-  async getAll(request: Request, response: Response) {
-    const developerRepository = new DevelopersRepository();
-
-    try {
-      const developers = await developerRepository.findAll();
-      if (developers.length === 0) {
-        return response.status(404).json({ message: 'Nenhum desenvolvedor encontrado' });
-      }
-      return response.json(developers);
-    } catch (error) {
-        return response.status(400).json({ error: (error as Error).message });
-    }
-  }
-
   async getById(request: Request, response: Response) {
     const { id } = request.params;
 
@@ -66,7 +60,7 @@ class DeveloperController {
       if (!developer) {
         return response.status(404).json({ error: 'Developer not found' });
       }
-      return response.json(developer);
+      return response.status(200).json(developer);
     } catch (error) {
         return response.status(400).json({ error: (error as Error).message });
     }
@@ -85,7 +79,7 @@ class DeveloperController {
       if (!developer) {
         return response.status(404).json({ error: 'Developer not found' });
       }
-      return response.json(developer);
+      return response.status(200).json(developer);
     } catch (error) {
         return response.status(400).json({ error: (error as Error).message });
     }

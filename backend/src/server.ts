@@ -3,7 +3,6 @@ import "reflect-metadata";
 
 import * as dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import routes from './routes';
 import express from 'express';
 import developerRouter from "./routes/developer.routes";
 import levelRouter from "./routes/level.routes"
@@ -21,7 +20,6 @@ const startServer = async () => {
   try {
       await AppDataSource.initialize();
       app.use(cors());
-      app.use(routes);
       const port = process.env.API_PORT;
       app.use(express.json());
       app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
