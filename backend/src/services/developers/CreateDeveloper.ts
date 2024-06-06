@@ -1,5 +1,6 @@
 import { IDeveloperRepository } from "../../repositories/IDeveloperRepository";
 import { Developers } from "../../models/developers";
+import { parseISO } from 'date-fns';
 
 interface IRequest {
   level: number;
@@ -13,8 +14,9 @@ class CreateDeveloper {
   constructor(private developerRepository: IDeveloperRepository) {}
 
   async execute({ level, nome, sexo, data_nascimento, hobby }: IRequest): Promise<Developers> {
+    
     try {
-      const nascimentoDate = new Date(data_nascimento);
+      const nascimentoDate = typeof data_nascimento === 'string' ? parseISO(data_nascimento) : data_nascimento;
 
       const today = new Date();
       let idade = today.getFullYear() - nascimentoDate.getFullYear();

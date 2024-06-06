@@ -69,6 +69,7 @@ const DeveloperList: React.FC = () => {
         if (willDelete) {
             try {
                 await deleteDeveloper(id);
+                setDevelopers(developers => developers.filter(developer => developer.id !== id));
                 swal("Desenvolvedor deletado com sucesso!", {
                     icon: "success",
                 });
@@ -89,7 +90,7 @@ const DeveloperList: React.FC = () => {
     };
 
     return (
-        <div className="container max-w-full p-12">
+        <div className="container min-h-screen min-w-full p-12 bg-slate-200">
 
             <div className="flex justify-between">
                 <h1 className="text-4xl font-bold mb-4 p1">Lista de Desenvolvedores</h1>
@@ -100,12 +101,12 @@ const DeveloperList: React.FC = () => {
                 </Link>
                 </div>
             <div className="flex justify-between p-4">
-                <Button onClick={handleOpenModal} color="primary">
+                <Button onClick={handleOpenModal} className="bg-green-500">
                     Adicionar Desenvolvedor
                 </Button>
                 
                 <input
-                    className="rounded-2xl bg-gray-100 p-2"
+                    className="rounded-2xl bg-white p-2"
                     type="text"
                     placeholder="Buscar desenvolvedor"
                     value={searchQuery}
@@ -122,7 +123,7 @@ const DeveloperList: React.FC = () => {
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border table-fixed">
                     <thead>
-                        <tr className="bg-slate-300">
+                        <tr className="bg-amber-400">
                             <th className="py-2 px-4 text-left cursor-pointer w-1/6" onClick={handleSortByName}
                             >Nome
                             &nbsp;

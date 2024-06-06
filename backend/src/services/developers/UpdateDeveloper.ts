@@ -2,6 +2,7 @@ import { IDeveloperRepository } from "../../repositories/IDeveloperRepository";
 import { Developers } from "../../models/developers";
 import { ILevelRepository } from "../../repositories/ILevelRepository";
 import { Levels } from "../../models/levels";
+import { parseISO } from "date-fns";
 
 interface IRequest {
     id: number;
@@ -35,7 +36,7 @@ class UpdateDeveloper {
         }
       }
 
-      const nascimentoDate = new Date(data_nascimento);
+      const nascimentoDate = typeof data_nascimento === 'string' ? parseISO(data_nascimento) : data_nascimento;
       const today = new Date();
       let idade = today.getFullYear() - nascimentoDate.getFullYear();
       const birthMonth = nascimentoDate.getMonth();
