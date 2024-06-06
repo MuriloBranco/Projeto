@@ -26,6 +26,7 @@ const DeveloperList: React.FC = () => {
         setSelectedDeveloper(null);
     };
 
+
     const loadDevelopers = useCallback(async (page: number, query: string) => {
         try {
             const response = await getDevelopers(page, 10 , query);
@@ -88,89 +89,91 @@ const DeveloperList: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto p-12 min-w-[800px]">
-          <div className="flex justify-between">
-            <h1 className="text-4xl font-bold mb-4 p-1">Lista de Desenvolvedores</h1>
-            <Link to="/levels">
-              <Button color='danger'>
-                Gerenciar Níveis
-              </Button>
-            </Link>
-          </div>
-          <div className="flex justify-between p-4">
-            <Button onClick={handleOpenModal} color="primary">
-              Adicionar Desenvolvedor
-            </Button>
-            <input
-              className="rounded-2xl bg-gray-100 p-2"
-              type="text"
-              placeholder="Buscar desenvolvedor"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <Modal show={showModal} onClose={handleCloseModal}>
-            <DeveloperForm 
-              developer={selectedDeveloper}
-              onClose={handleCloseModal}
-              onSave={handleSaveDeveloper} 
-            />
-          </Modal>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border table-fixed">
-              <thead>
-                <tr className="bg-slate-300">
-                  <th className="py-2 px-4 text-left cursor-pointer w-1/7" onClick={handleSortByName}>
-                    Nome
-                    &nbsp;
-                    <FontAwesomeIcon icon={faSort} />
-                  </th>
-                  <th className="py-2 px-4 text-left w-1/6">Nível</th>
-                  <th className="py-2 px-4 text-left w-1/7">Idade</th>
-                  <th className="py-2 px-4 text-left w-1/7">Sexo</th>
-                  <th className="py-2 px-4 text-left w-1/6">Hobby</th>
-                  <th className="py-2 px-4 text-left w-1/7">Aniversário</th>
-                  <th className="py-2 px-4 text-left w-1/6">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {developers.map((developer) => (
-                  <tr key={developer.id} className="border-t flex flex-wrap md:table-row">
-                    <td className="py-2 px-4 w-full md:w-auto">{developer.nome}</td>
-                    <td className="py-2 px-4 w-full md:w-auto">{developer.level.nivel}</td>
-                    <td className="py-2 px-4 w-full md:w-auto">{developer.idade}</td>
-                    <td className="py-2 px-4 w-full md:w-auto">{developer.sexo}</td>
-                    <td className="py-2 px-4 w-full md:w-auto">{developer.hobby}</td>
-                    <td className="py-2 px-4 w-full md:w-auto">{format(new Date(developer.data_nascimento), 'dd/MM/yyyy')}</td>
-                    <td className="py-2 px-4 w-full md:w-auto flex space-x-2 justify-center md:justify-start">
-                      <Button 
-                        color="secondary" 
-                        onClick={() => handleEditDeveloper(developer)}
-                      >
-                        Editar
-                      </Button>
-                      <Button 
-                        color="danger" 
-                        onClick={() => handleDeleteDeveloper(developer.id)}
-                      >
-                        Deletar
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-center mt-4">
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={handlePageChange}
-              color="primary"
-            />
-          </div>
+        <div className="container mx-auto p-12">
+
+            <div className="flex justify-between">
+                <h1 className="text-4xl font-bold mb-4 p1">Lista de Desenvolvedores</h1>
+                <Link to="/levels">
+                    <Button color='danger'>
+                        Gerenciar Níveis
+                    </Button>
+                </Link>
+                </div>
+            <div className="flex justify-between p-4">
+                <Button onClick={handleOpenModal} color="primary">
+                    Adicionar Desenvolvedor
+                </Button>
+                
+                <input
+                    className="rounded-2xl bg-gray-100 p-2"
+                    type="text"
+                    placeholder="Buscar desenvolvedor"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
+            <Modal show={showModal} onClose={handleCloseModal}>
+                <DeveloperForm 
+                    developer={selectedDeveloper}
+                    onClose={handleCloseModal}
+                    onSave={handleSaveDeveloper} 
+                />
+            </Modal>
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border">
+                    <thead>
+                        <tr className="bg-slate-300">
+                            <th className="py-2 px-4 text-left cursor-pointer" onClick={handleSortByName}
+                            >Nome
+                            &nbsp;
+                            <FontAwesomeIcon icon={faSort} />
+                            </th>
+                            <th className="py-2 px-4 text-left">Nível</th>
+                            <th className="py-2 px-4 text-left">Idade</th>
+                            <th className="py-2 px-4 text-left">Sexo</th>
+                            <th className="py-2 px-4 text-left">Hobby</th>
+                            <th className="py-2 px-4 text-left">Aniversário</th>
+                            <th className="py-2 px-4 text-left">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {developers.map((developer) => (
+                            <tr key={developer.id} className="border-t flex flex-wrap md:table-row">
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.nome}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.level.nivel}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.idade}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.sexo}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{developer.hobby}</td>
+                                <td className="py-2 px-4 w-full md:w-auto">{format(new Date(developer.data_nascimento), 'dd/MM/yyyy')}</td>
+                                <td className="py-2 px-4 w-full md:w-auto flex space-x-2 justify-center md:justify-start">
+                                    <Button 
+                                        color="secondary" 
+                                        onClick={() => handleEditDeveloper(developer)}
+                                    >
+                                        Editar
+                                    </Button>
+                                    <Button 
+                                        color="danger" 
+                                        onClick={() => handleDeleteDeveloper(developer.id)}
+                                    >
+                                        Deletar
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="flex justify-center mt-4">
+                <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    color="primary"
+                />
+            </div>
         </div>
-      );
+    );
 };
 
 export default DeveloperList;
