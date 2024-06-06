@@ -1,23 +1,28 @@
 import React from 'react';
+import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
 
 const Home: React.FC = () => {
   return (
-    <div className="container mx-auto p-8">
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div className="bg-slate-200 min-h-screen min-w-full mx-auto p-8">
+      <div className="max-w-md mx-auto bg-orange-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
         <div className="md:flex">
           <div className="p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Bem-vindo à Aplicação</h1>
-            <p className="text-gray-500 mb-5">
-              Explore a aplicação e gerencie desenvolvedores e níveis de maneira eficiente.
-            </p>
-            <nav className="space-y-4">
-              <Link to="/developers" className="block text-blue-500 hover:underline">
-                Gerenciar Desenvolvedores
+            <h1 className="text-3xl font-bold mb-4">Bem-vindo à Aplicação de Gerenciamento de Desenvolvedores</h1>
+              <p className='text-gray-900 mb-5"'>
+                Utilize os botões abaixo para começar a gerenciar os desenvolvedores e níveis.
+              </p>
+            <nav className="flex justify-between mt-12">
+              <Link to="/developers">
+                <Button color='secondary' className='text-gray-700'>
+                  Gerenciar Desenvolvedores
+                </Button>           
               </Link>
-              <Link to="/levels" className="block text-blue-500 hover:underline">
-                Gerenciar Níveis
+              <Link to="/levels">
+                <Button color='secondary' className='text-gray-700'>
+                  Gerenciar Níveis
+                </Button>
               </Link>
             </nav>
           </div>
