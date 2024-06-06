@@ -18,7 +18,7 @@ class LevelsRepository implements ILevelRepository {
 // Conta quantos desenvolvedores estão associados ao nível especificado
     async hasAssociatedDevelopers(levelId: number): Promise<boolean> {
         const developersCount = await this.developerRepository.count({
-          where: { nivel_id: levelId } 
+          where: { level: {id: levelId} } 
         });
         return developersCount > 0;
     }

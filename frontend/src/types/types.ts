@@ -1,6 +1,5 @@
 export interface Developer {
     id: number;
-    nivel_id: number;
     nome: string;
     sexo: string;
     data_nascimento: string;

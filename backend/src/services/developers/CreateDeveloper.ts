@@ -2,7 +2,7 @@ import { IDeveloperRepository } from "../../repositories/IDeveloperRepository";
 import { Developers } from "../../models/developers";
 
 interface IRequest {
-  nivel_id: number;
+  level: number;
   nome: string;
   sexo: string;
   data_nascimento: Date | string;
@@ -12,7 +12,7 @@ interface IRequest {
 class CreateDeveloper {
   constructor(private developerRepository: IDeveloperRepository) {}
 
-  async execute({ nivel_id, nome, sexo, data_nascimento, hobby }: IRequest): Promise<Developers> {
+  async execute({ level, nome, sexo, data_nascimento, hobby }: IRequest): Promise<Developers> {
     try {
       const nascimentoDate = new Date(data_nascimento);
 
@@ -26,7 +26,7 @@ class CreateDeveloper {
       }
 
       const developer = await this.developerRepository.create({
-        nivel_id,
+        level,
         nome,
         sexo,
         data_nascimento: nascimentoDate, 

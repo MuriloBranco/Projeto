@@ -13,7 +13,6 @@ type DeveloperFormData = {
   data_nascimento: string;
   idade: number;
   hobby: string;
-  nivel_id: number;
   level: Level;
 };
 
@@ -46,7 +45,6 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
       setValue('data_nascimento', developer.data_nascimento);
       setValue('idade', developer.idade);
       setValue('hobby', developer.hobby);
-      setValue('nivel_id', developer.nivel_id);
     }
   }, [developer, setValue]);
 
@@ -93,7 +91,7 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
 
       <div>
         <select
-          {...register('nivel_id', { required: "Nível é um campo obrigatório" })}
+          {...register('level', { required: "Nível é um campo obrigatório" })}
           className="w-full px-4 py-2 border border-gray-300 rounded-md"
         >
           <option value="">Selecione o nível</option>
@@ -103,7 +101,7 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
             </option>
           ))}
         </select>
-        {errors.nivel_id && <p className="text-red-500 text-sm">{errors.nivel_id.message}</p>}
+        {errors.level && <p className="text-red-500 text-sm">{errors.level.message}</p>}
       </div>
 
       <FormInput

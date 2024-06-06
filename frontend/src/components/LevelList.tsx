@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getLevels, deleteLevel } from '../services/api';
 import LevelForm from './/LevelForm';
+import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import swal from 'sweetalert';
 import { Pagination } from '@mui/material';
@@ -81,6 +82,7 @@ const LevelList: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Link to="/developers" className="text-blue-500">Voltar</Link>
       <h1 className="text-2xl font-bold mb-4">Lista de Níveis</h1>
       <div className="flex justify-between p-4">
       <button 

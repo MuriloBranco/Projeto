@@ -14,11 +14,6 @@ export class CreateDevelopersTable1717194064652 implements MigrationInterface {
                   isGenerated: true,
                 },
                 {
-                  name: 'nivel_id',
-                  type: 'integer',
-                  isNullable: false,
-                },
-                {
                   name: 'nome',
                   type: 'varchar',
                   isNullable: false,
@@ -43,12 +38,18 @@ export class CreateDevelopersTable1717194064652 implements MigrationInterface {
                   type: 'varchar',
                   isNullable: false,
                 },
+                {
+                  name: 'level',
+                  type: 'integer',
+                  isNullable: false,
+                },
+            
               ],
             }),
           );
           await queryRunner.createForeignKeys('developers', [
             new TableForeignKey({
-              columnNames: ['nivel_id'],
+              columnNames: ['level'],
               referencedColumnNames: ['id'],
               referencedTableName: 'levels',
             }),
