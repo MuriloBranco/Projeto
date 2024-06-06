@@ -2,12 +2,13 @@ import { Developers } from '../models/developers';
 
 interface IDeveloperDTO {
     id: number;
-    nivel_id: string;
+    nivel_id: number;
     nome: string;
     sexo: string;
     data_nascimento: Date;
     idade: number;
     hobby: string;
+    
     }
 
 

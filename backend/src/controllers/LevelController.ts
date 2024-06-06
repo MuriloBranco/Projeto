@@ -9,6 +9,7 @@ import { FindAllLevels } from '../services/levels/FindAllLevels';
 
 
 
+
 class LevelController {
    async index(request: Request, response: Response): Promise<Response> {
      const levelRepository = new LevelsRepository();
@@ -17,6 +18,9 @@ class LevelController {
 
     try {
       const { levels, totalPages } = await findAllLevels.execute({ query: query as string, page: Number(page), pageSize: Number(pageSize) });
+      if (levels.length === 0) {
+        return response.status(404).json({ message: 'Nenhum nível encontrado' });
+      }
       return response.json({ items: levels, totalPages });
     } catch (error) {
       console.error('Erro ao carregar níveis', error);
@@ -85,7 +89,7 @@ class LevelController {
     }
   }
 
-  async delete(request: Request, response: Response) {
+  async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
     const levelRepository = new LevelsRepository();

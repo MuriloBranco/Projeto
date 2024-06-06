@@ -1,7 +1,8 @@
-import { Entity,
-    PrimaryGeneratedColumn,
+import { Entity,    PrimaryGeneratedColumn,
     Column,
+    OneToMany,
  } from 'typeorm';
+import { Developers } from './developers';
   
   @Entity('levels')
   export class Levels {
@@ -10,5 +11,9 @@ import { Entity,
   
     @Column()
     nivel: string;
+
+    
+    @OneToMany(() => Developers, developer => developer.level)
+    developers: Developers[];
 
   }

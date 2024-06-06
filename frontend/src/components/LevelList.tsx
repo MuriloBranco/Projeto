@@ -33,6 +33,11 @@ const LevelList: React.FC = () => {
       const response = await getLevels(page, 10, query);
       setLevels(response.data.items);
       setTotalPages(response.data.totalPages);
+      if (response.data.items.length === 0) {
+        swal("Nenhum nível encontrado", {
+          icon: "info",
+        });
+      }
     } catch (error) {
       console.error('Erro ao carregar níveis', error);
     }
@@ -99,30 +104,42 @@ const LevelList: React.FC = () => {
           onSave={handleSaveLevel} 
         />
       </Modal>
-      <ul className="space-y-2">
-        {levels.map((level) => (
-          <li 
-            key={level.id} 
-            className="flex justify-between items-center p-4 border border-gray-200 rounded"
-          >
-            <span>{level.nivel}</span>
-            <div className="space-x-2">
-              <button 
-                className="bg-yellow-500 text-white px-2 py-1 rounded" 
-                onClick={() => handleEditLevel(level)}
-              >
-                Editar
-              </button>
-              <button 
-                className="bg-red-500 text-white px-2 py-1 rounded" 
-                onClick={() => handleDeleteLevel(level.id)}
-              >
-                Deletar
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border">
+          <thead>
+                  <tr>
+                      <th className="py-2 px-4 text-left">Nome</th>
+                      <th className="py-2 px-4 text-left">Quantidade vinculado</th>
+                      <th className="py-2 px-4 text-left">Ações</th>
+                    </tr>
+          </thead>
+          <tbody>
+            {levels.map((level) => (
+              <tr key={level.id} className="border-t">
+                <td className="py-2 px-4">{level.nivel}</td>
+                <td className="py-2 px-4">{level.nivel}</td>
+                <td className="py-2 px-4 space-x-2">
+                  <button 
+                    className="bg-yellow-500 text-white px-2 py-1 rounded" 
+                    onClick={() => handleEditLevel(level)}
+                  >
+                    Editar
+                  </button>
+                  <button 
+                    className="bg-red-500 text-white px-2 py-1 rounded" 
+                    onClick={() => handleDeleteLevel(level.id)}
+                  >
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+
+                
+
+          ))}
+          </tbody>
+        </table>
+      </div>
       <div className="flex justify-center mt-4">
         <Pagination
           count={totalPages}

@@ -1,7 +1,7 @@
 import { Levels } from '../../models/levels';
 import { ILevelRepository } from '../../repositories/ILevelRepository';
 
-interface IRequest {
+interface IFindAllLevelsRequest {
     query?: string;
     page: number;
     pageSize: number;
@@ -10,7 +10,7 @@ interface IRequest {
 class FindAllLevels {
     constructor(private levelRepository: ILevelRepository) {}
     
-    async execute({ query, page, pageSize }: IRequest): Promise<{ levels: Levels[], totalPages: number }> {
+    async execute({ query, page, pageSize }: IFindAllLevelsRequest): Promise<{ levels: Levels[], totalPages: number }> {
         const [levels, totalLevels] = await this.levelRepository.findAndCountLevels(query || '', page, pageSize);
 
         const totalPages = Math.ceil(totalLevels / pageSize);

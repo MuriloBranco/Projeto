@@ -3,7 +3,7 @@ import { Developers } from "../../models/developers";
 
 interface IRequest {
     id: number;
-    nivel_id?: string;
+    nivel_id?: number;
     nome?: string;
     sexo?: string;
     data_nascimento?: Date | string;

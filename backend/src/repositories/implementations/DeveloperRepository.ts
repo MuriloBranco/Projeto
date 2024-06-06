@@ -19,12 +19,17 @@ class DevelopersRepository implements IDeveloperRepository {
     }
 
     async findAll(): Promise<Developers[]> {
-        const developers = await this.ormRepository.find();
+        const developers = await this.ormRepository.find({
+            relations: ["level"]
+        });
         return developers;
     }
 
     async findById(id: number): Promise<Developers | undefined> {
-        const developer = await this.ormRepository.findOneBy({id});
+        const developer = await this.ormRepository.findOne({
+            where: { id },
+            relations: ["level"]
+        });
         return developer;
     }
 

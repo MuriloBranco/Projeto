@@ -1,7 +1,9 @@
 import { Entity,
     PrimaryGeneratedColumn,
     Column,
+    ManyToOne,
  } from 'typeorm';
+import { Levels } from './levels';
   
   @Entity('developers')
   export class Developers {
@@ -9,7 +11,7 @@ import { Entity,
     id: number;
   
     @Column()
-    nivel_id: string;
+    nivel_id: number;
 
     @Column()
     nome: string;
@@ -25,4 +27,7 @@ import { Entity,
 
     @Column()
     hobby: string;
+
+    @ManyToOne(() => Levels, level => level.developers)
+    level: Levels;
   }

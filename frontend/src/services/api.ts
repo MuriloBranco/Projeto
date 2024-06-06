@@ -41,6 +41,12 @@ export const getLevels = (page: number, pageSize: number, query: string) => {
             pageSize,
             query,
         },
+    }).catch(error => {
+        if (error.response && error.response.status === 404) {
+            return { data: { items: [], totalPages: 0, message: 'Nenhum nível encontrado' }};
+        } else {
+            throw error;
+        }
     });
 }
 
