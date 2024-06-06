@@ -89,7 +89,7 @@ const DeveloperList: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto p-12">
+        <div className="container max-w-full p-12">
 
             <div className="flex justify-between">
                 <h1 className="text-4xl font-bold mb-4 p1">Lista de Desenvolvedores</h1>
@@ -120,20 +120,20 @@ const DeveloperList: React.FC = () => {
                 />
             </Modal>
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border">
+                <table className="min-w-full bg-white border table-fixed">
                     <thead>
                         <tr className="bg-slate-300">
-                            <th className="py-2 px-4 text-left cursor-pointer" onClick={handleSortByName}
+                            <th className="py-2 px-4 text-left cursor-pointer w-1/6" onClick={handleSortByName}
                             >Nome
                             &nbsp;
                             <FontAwesomeIcon icon={faSort} />
                             </th>
-                            <th className="py-2 px-4 text-left">Nível</th>
-                            <th className="py-2 px-4 text-left">Idade</th>
-                            <th className="py-2 px-4 text-left">Sexo</th>
-                            <th className="py-2 px-4 text-left">Hobby</th>
-                            <th className="py-2 px-4 text-left">Aniversário</th>
-                            <th className="py-2 px-4 text-left">Ações</th>
+                            <th className="py-2 px-4 text-left w-1/6">Nível</th>
+                            <th className="py-2 px-4 text-left w-1/6">Idade</th>
+                            <th className="py-2 px-4 text-left w-1/6">Sexo</th>
+                            <th className="py-2 px-4 text-left w-1/6">Hobby</th>
+                            <th className="py-2 px-4 text-left w-1/6">Aniversário</th>
+                            <th className="py-2 px-4 text-left w-1/6">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
