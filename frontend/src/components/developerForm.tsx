@@ -30,7 +30,7 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
   useEffect(() => {
     const loadLevels = async () => {
       const levelsData = await getLevels(1, 100, '');
-      setLevels(levelsData.data.items);
+      setLevels(levelsData.data.data);
     };
 
     loadLevels();
@@ -65,6 +65,7 @@ const DeveloperForm: React.FC<DeveloperFormProps> = ({ developer, onClose, onSav
       swal("Erro", "Ocorreu um erro ao salvar o desenvolvedor.", "error");
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col space-y-4">

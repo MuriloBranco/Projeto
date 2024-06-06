@@ -119,7 +119,7 @@ return (
       <table className="min-w-full bg-white border table-fixed">
         <thead>
           <tr>
-            <th className="py-2 px-4 text-left w-1/2">Nome</th>
+            <th className="py-2 px-4 text-left w-2/5">Nome</th>
             <th className="py-2 px-4 text-left w-1/3">Quantidade vinculado</th>
             <th className="py-2 px-4 text-left w-1/3">Ações</th>
           </tr>
