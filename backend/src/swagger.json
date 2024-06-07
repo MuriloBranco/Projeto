@@ -25,8 +25,9 @@
                                     "nome": {
                                         "type": "string"
                                     },
-                                    "nivel_id": {
-                                        "type": "string"
+                                    "level": {
+                                        "type": "integer",
+                                        "description": "References the id of the level in Levels table"
                                     },
                                     "sexo": {
                                         "type": "string"
@@ -41,7 +42,7 @@
                                 },
                                 "example": {
                                     "nome": "Murilo Branco",
-                                    "nivel_id": "Pleno",
+                                    "level": 1,
                                     "sexo": "M",
                                     "hobby": "Programar",
                                     "data_nascimento": "1999-01-20"
@@ -79,8 +80,9 @@
                                             "nome": {
                                                 "type": "string"
                                             },
-                                            "nivel_id": {
-                                                "type": "string"
+                                            "level": {
+                                                "type": "integer",
+                                                "description": "References the id of the level in Levels table"
                                             },
                                             "sexo": {
                                                 "type": "string"
@@ -126,8 +128,9 @@
                                     "nome": {
                                         "type": "string"
                                     },
-                                    "nivel_id": {
-                                        "type": "string"
+                                    "level": {
+                                        "type": "integer",
+                                        "description": "References the id of the level in Levels table"
                                     },
                                     "sexo": {
                                         "type": "string"
@@ -142,7 +145,7 @@
                                 },
                                 "example": {
                                     "nome": "Murilo Branco",
-                                    "nivel_id": "Pleno",
+                                    "level": 1,
                                     "sexo": "M",
                                     "hobby": "Programar",
                                     "data_nascimento": "1999-01-20"
