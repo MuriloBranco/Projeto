@@ -16,7 +16,7 @@ interface LevelFormProps {
 }
 
 const LevelForm: React.FC<LevelFormProps> = ({ level, onClose, onSave }) => {
-  const { register, handleSubmit, reset, setValue } = useForm<LevelFormData>();
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<LevelFormData>();
 
   useEffect(() => {
     if (level) {
@@ -44,7 +44,15 @@ const LevelForm: React.FC<LevelFormProps> = ({ level, onClose, onSave }) => {
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col space-y-4">
-      <FormInput name="nivel" placeholder="Nível" register={register} required />
+      <div>
+        <FormInput 
+          name="nivel" 
+          placeholder="Nível" 
+          register={register} 
+          error={errors.nivel} 
+          required 
+        />
+      </div>
       <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
         Salvar
       </button>
