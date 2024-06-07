@@ -81,7 +81,7 @@ const LevelList: React.FC = () => {
         loadLevels(currentPage, searchQuery);
       } catch (error) {
         console.error('Erro ao deletar nível', error);
-        swal("Erro", "Ocorreu um erro ao deletar o nível.", "error");
+        swal("Erro", "Há desenvolvedores associados a este nível, não é possível deletá-lo.", "error");
       }
     }
   };
