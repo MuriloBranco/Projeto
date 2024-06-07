@@ -9,6 +9,9 @@
 - Typescript
 - Axios
 
+# Swagger
+- [http://localhost:5005/api-docs/]
+
 
 ## Instalar Banco de dados
 - PostgreSQL(version 16.3)
