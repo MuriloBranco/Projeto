@@ -1,16 +1,17 @@
 # Projeto de Cadastro de Desenvolvedores
 
 # Tecnologias:
-- Node.js
-- Express
-- TypeORM
-- React
-- Tailwind
-- Typescript
-- Axios
+- Node.js(version 20.11)
+- Express(version 4.17)
+- TypeORM(version 0.3.20)
+- React(version 18.3)
+- Tailwind(version 3.4)
+- Typescript(version 4.9)
+- Axios(version 1.7)
 
 # Swagger
 - [http://localhost:5005/api-docs/]
+
 
 
 ## Instalar Banco de dados
