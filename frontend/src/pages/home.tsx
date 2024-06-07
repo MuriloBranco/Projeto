@@ -13,7 +13,7 @@ const Home: React.FC = () => {
               <p className='text-gray-900 mb-5"'>
                 Utilize os botões abaixo para começar a gerenciar os desenvolvedores e níveis.
               </p>
-            <nav className="flex justify-between mt-12">
+            <nav className="flex gap-4 mt-12">
               <Link to="/developers">
                 <Button color='secondary' className='text-gray-700'>
                   Gerenciar Desenvolvedores
