@@ -15,6 +15,7 @@
 
 
 ## Instalar Banco de dados
+- Crie um banco de dados para o projeto.
 - PostgreSQL(version 16.3)
 
 # Back-end
@@ -28,3 +29,7 @@
 - npm install
 - Iniciar o frontend --- npm start
 - Rodando em [http://localhost:3000]
+
+
+## Suporte
+[murilohkbranco@gmail.com]
